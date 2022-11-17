@@ -26,6 +26,8 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
+        if (!InputManager.Instance.isStarted)
+            return;
         MovePlayer();
     }
     #endregion
@@ -33,10 +35,6 @@ public class PlayerMovement : MonoBehaviour
     #region Movement
     void MovePlayer()
     {
-        //if (!UIManagement.instance.isStarted)
-        //    return;
-        //if (!GameManager.instance.isAlive)
-        //    return;
 
         transform.position += Vector3.forward * Time.deltaTime * forwardSpeed;
 
