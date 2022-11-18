@@ -5,6 +5,9 @@ TagManager:
   serializedVersion: 2
   tags:
   - CollectiblePlayer
+  - Obstacle
+  - Barrel
+  - Range
   layers:
   - Default
   - TransparentFX
