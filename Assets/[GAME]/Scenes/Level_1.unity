@@ -2484,6 +2484,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cec7112ac12608742b654d93377a5b27, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerCount: 0
+  isPistol: 0
+  isShootgun: 0
   anim: {fileID: 1173431619}
   pistolRefPositions:
   - {fileID: 6514550667678035487}
@@ -3376,6 +3379,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8180747843430024875, guid: 72e314ae814f67747a91248652dbaab2, type: 3}
+      propertyPath: poolerExplosionVFX
+      value: 
+      objectReference: {fileID: 1709669658}
     - target: {fileID: 8180747843430024875, guid: 72e314ae814f67747a91248652dbaab2, type: 3}
       propertyPath: poolerexplosionVFX
       value: 

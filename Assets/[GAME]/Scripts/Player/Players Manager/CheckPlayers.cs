@@ -72,22 +72,7 @@ public class CheckPlayers : MonoBehaviour
     {
         if (other.CompareTag("Obstacle"))
         {
-            if (playerCount >= 1)
-            {
-                playerCount--;
-                Transform lastChild = transform.GetChild(transform.childCount - 1);
-                lastChild.parent = null;
-                gunsPlayers.Remove(lastChild);
-                lastChild.position = Vector3.Lerp(lastChild.position, new Vector3(lastChild.position.x, lastChild.position.y + 2, lastChild.position.z + 2), Time.deltaTime * 5);
-                lastChild.AddComponent<Rigidbody>();
-            }
-            else
-            {
-                Debug.Break();
-                Debug.LogError("Fail");
-                anim.Play("Fail");
-                //fail bool eklenecek
-            }
+            CheckFail(other);
         }
         if (other.CompareTag("UpgradeDoor"))
         {
@@ -96,21 +81,16 @@ public class CheckPlayers : MonoBehaviour
         }
         if (other.CompareTag("DecreaseDoor"))
         {
-            if (playerCount >= 1)
+            CheckFail(other);
+        }
+        if (other.CompareTag("Barrel"))
+        {
+            Debug.LogError("Fail");
+            anim.Play("Fail");
+            for (int i = 0; i < gunsPlayers.Count; i++)
             {
-                playerCount--;
-                Transform lastChild = transform.GetChild(transform.childCount - 1);
-                lastChild.parent = null;
-                gunsPlayers.Remove(lastChild);
-                lastChild.position = Vector3.Lerp(lastChild.position, new Vector3(lastChild.position.x, lastChild.position.y + 2, lastChild.position.z + 2), Time.deltaTime * 5);
-                lastChild.AddComponent<Rigidbody>();
-            }
-            else
-            {
-                Debug.Break();
-                Debug.LogError("Fail");
-                anim.Play("Fail");
-                //fail bool eklenecek
+                gunsPlayers[i].gameObject.SetActive(false);
+
             }
         }
     }
@@ -141,6 +121,10 @@ public class CheckPlayers : MonoBehaviour
                 Destroy(other.gameObject.GetComponent<Rigidbody>());
                 other.gameObject.GetComponent<Animator>().SetBool("Pos1", true);
             }
+        }
+        if (other.gameObject.CompareTag("Money"))
+        {
+
         }
     }
     #endregion
@@ -303,5 +287,25 @@ public class CheckPlayers : MonoBehaviour
     }
     #endregion
 
-
+    #region Fail
+    void CheckFail(Collider other)
+    {
+        if (playerCount >= 1)
+        {
+            playerCount--;
+            Transform lastChild = transform.GetChild(transform.childCount - 1);
+            lastChild.parent = null;
+            gunsPlayers.Remove(lastChild);
+            lastChild.position = Vector3.Lerp(lastChild.position, new Vector3(lastChild.position.x, lastChild.position.y + 2, lastChild.position.z + 2), Time.deltaTime * 5);
+            lastChild.AddComponent<Rigidbody>();
+        }
+        else
+        {
+            Debug.Break();
+            Debug.LogError("Fail");
+            anim.Play("Fail");
+            //fail bool eklenecek
+        }
+    }
+    #endregion
 }
