@@ -30,8 +30,15 @@ public class Bullet : MonoBehaviour
     {
         if (other.CompareTag("Barrel"))
         {
-            Destroy(other.gameObject);
-            Explosion(other.transform); 
+            Barrel barrel = other.GetComponent<Barrel>();
+
+            barrel.barrelCount--;
+            barrel.barrelText.text = barrel.barrelCount.ToString();
+            if (barrel.barrelCount <= 0)
+            {
+                Destroy(other.gameObject);
+                Explosion(other.transform);
+            }
             gameObject.SetActive(false);
         }
         if (other.CompareTag("Range"))

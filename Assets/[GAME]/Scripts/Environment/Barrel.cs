@@ -5,8 +5,8 @@ public class Barrel : MonoBehaviour
 {
 
     #region References
-    [SerializeField] TextMeshProUGUI barrelText;
-    [SerializeField] int barrelCount;
+    public TextMeshProUGUI barrelText;
+    public int barrelCount;
     #endregion
 
     #region Monobehaviour

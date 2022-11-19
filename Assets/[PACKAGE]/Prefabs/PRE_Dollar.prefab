@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 9129082913595708345}
   - component: {fileID: 6447843696205572730}
   - component: {fileID: 4428077921487617161}
+  - component: {fileID: 4776697954126540723}
   m_Layer: 0
   m_Name: PRE_Dollar
   m_TagString: Money
@@ -114,3 +115,15 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 122
   m_CollisionDetection: 0
+--- !u!114 &4776697954126540723
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7327911823671980652}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ade3203dcacd3994d816e6635159028a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

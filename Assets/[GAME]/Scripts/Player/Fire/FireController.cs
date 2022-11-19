@@ -2,6 +2,12 @@ using UnityEngine;
 
 public class FireController : MonoBehaviour
 {
+    #region Public-Private Variables
+    public float gunDelay;
+
+    private float timer = 0.0f;
+    #endregion
+
     #region References
     [SerializeField] Transform firePosition;
     #endregion
@@ -18,21 +24,29 @@ public class FireController : MonoBehaviour
     #region Trigger
     private void OnTriggerStay(Collider other)
     {
+
         if (other.CompareTag("Barrel"))
         {
-            Fire();
+            Fire(gunDelay);
         }
     }
     #endregion
 
     #region Shooting
-    void Fire()
+    void Fire(float gunDelay)
     {
-        Bullet bullet = Bullet();
-        bullet.gameObject.SetActive(true);
+        timer -= Time.deltaTime;
 
-        bullet.transform.position = firePosition.position;
-        bullet.transform.rotation = Quaternion.identity;
+        if (timer <= 0)
+        {
+            Bullet bullet = Bullet();
+            bullet.gameObject.SetActive(true);
+
+            bullet.transform.position = firePosition.position;
+            bullet.transform.rotation = Quaternion.identity;
+
+            timer = gunDelay;
+        }
     }
     #endregion
 }

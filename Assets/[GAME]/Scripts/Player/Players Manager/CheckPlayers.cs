@@ -124,7 +124,7 @@ public class CheckPlayers : MonoBehaviour
         }
         if (other.gameObject.CompareTag("Money"))
         {
-
+            other.gameObject.GetComponent<Money>().SetCollect();
         }
     }
     #endregion
