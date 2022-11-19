@@ -10,11 +10,11 @@ public class Bullet : MonoBehaviour
 
     #region Pooler
     [Header("Pooler")]
-    [SerializeField] Pooler poolerexplosionVFX;
+    [SerializeField] Pooler poolerExplosionVFX;
 
     private ExplosionVFX ExplosionVFX()
     {
-        return poolerexplosionVFX.GetGo<ExplosionVFX>();
+        return poolerExplosionVFX.GetGo<ExplosionVFX>();
     }
     #endregion
 

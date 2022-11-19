@@ -8,6 +8,9 @@ TagManager:
   - Obstacle
   - Barrel
   - Range
+  - Money
+  - UpgradeDoor
+  - DecreaseDoor
   layers:
   - Default
   - TransparentFX

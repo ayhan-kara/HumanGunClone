@@ -9,10 +9,10 @@ public class CheckPlayers : MonoBehaviour
     #endregion
 
     #region Private Variables, Boolean
-    private int playerCount = 0;
+    public int playerCount = 0;
 
-    bool isPistol = false;
-    bool isShootgun = false;
+    public bool isPistol = false;
+    public bool isShootgun = false;
     #endregion
 
     #region References
@@ -40,6 +40,14 @@ public class CheckPlayers : MonoBehaviour
     [SerializeField] Material yellowPlayerMaterial;
     #endregion
 
+    #region Pooler
+    [Header("Pooler")]
+    [SerializeField] Pooler poolPlayers;
+    private Players Players()
+    {
+        return poolPlayers.GetGo<Players>();
+    }
+    #endregion
 
     #region Monobehaviour
     private void Awake()
@@ -59,32 +67,9 @@ public class CheckPlayers : MonoBehaviour
     }
     #endregion
 
-    #region Trigger
+    #region Trigger-Collision
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("CollectiblePlayer"))
-        {
-            other.transform.parent = transform;
-            playerCount++;
-            anim.SetBool("GunPos", true);
-            if (playerCount <= 3)
-            {
-                isPistol = true;
-                Destroy(other.GetComponent<BoxCollider>());
-                other.GetComponent<Animator>().SetBool("Pos1", true);
-                gunsPlayers.Add(other.transform);
-            }
-            else if (playerCount >= 4)
-            {
-                if (isPistol)
-                    isPistol = false;
-                isShootgun = true;
-                gunsPlayers.Add(other.transform);
-                newShootgunPlayers.Add(other.transform);
-                Destroy(other.GetComponent<BoxCollider>());
-                other.GetComponent<Animator>().SetBool("Pos1", true);
-            }
-        }
         if (other.CompareTag("Obstacle"))
         {
             if (playerCount >= 1)
@@ -102,6 +87,59 @@ public class CheckPlayers : MonoBehaviour
                 Debug.LogError("Fail");
                 anim.Play("Fail");
                 //fail bool eklenecek
+            }
+        }
+        if (other.CompareTag("UpgradeDoor"))
+        {
+            playerCount += other.GetComponent<UpgradeDoor>().doorCount;
+            SetPool(other.transform);
+        }
+        if (other.CompareTag("DecreaseDoor"))
+        {
+            if (playerCount >= 1)
+            {
+                playerCount--;
+                Transform lastChild = transform.GetChild(transform.childCount - 1);
+                lastChild.parent = null;
+                gunsPlayers.Remove(lastChild);
+                lastChild.position = Vector3.Lerp(lastChild.position, new Vector3(lastChild.position.x, lastChild.position.y + 2, lastChild.position.z + 2), Time.deltaTime * 5);
+                lastChild.AddComponent<Rigidbody>();
+            }
+            else
+            {
+                Debug.Break();
+                Debug.LogError("Fail");
+                anim.Play("Fail");
+                //fail bool eklenecek
+            }
+        }
+    }
+
+    private void OnCollisionEnter(Collision other)
+    {
+        if (other.gameObject.CompareTag("CollectiblePlayer"))
+        {
+            other.transform.parent = transform;
+            playerCount++;
+            anim.SetBool("GunPos", true);
+            if (playerCount <= 3)
+            {
+                isPistol = true;
+                Destroy(other.gameObject.GetComponent<BoxCollider>());
+                Destroy(other.gameObject.GetComponent<Rigidbody>());
+                other.gameObject.GetComponent<Animator>().SetBool("Pos1", true);
+                gunsPlayers.Add(other.transform);
+            }
+            else if (playerCount >= 4)
+            {
+                if (isPistol)
+                    isPistol = false;
+                isShootgun = true;
+                gunsPlayers.Add(other.transform);
+                newShootgunPlayers.Add(other.transform);
+                Destroy(other.gameObject.GetComponent<BoxCollider>());
+                Destroy(other.gameObject.GetComponent<Rigidbody>());
+                other.gameObject.GetComponent<Animator>().SetBool("Pos1", true);
             }
         }
     }
@@ -239,6 +277,28 @@ public class CheckPlayers : MonoBehaviour
                     newShootgunPlayers[2].GetComponent<Animator>().SetBool("Pos3", true);
                 }
             }
+        }
+    }
+
+    void SetPool(Transform other)
+    {
+        Players players = Players();
+        players.gameObject.SetActive(true);
+
+        players.transform.position = other.position;
+        players.transform.rotation = Quaternion.identity;
+        players.transform.parent = transform;
+
+        players.GetComponent<Animator>().SetBool("Pos1", true);
+
+        if (playerCount <= 3)
+        {
+            gunsPlayers.Add(players.transform);
+        }
+        else if (playerCount >= 4)
+        {
+            gunsPlayers.Add(players.transform);
+            newShootgunPlayers.Add(players.transform);
         }
     }
     #endregion
