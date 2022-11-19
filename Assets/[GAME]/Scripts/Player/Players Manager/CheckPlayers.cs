@@ -281,8 +281,8 @@ public class CheckPlayers : MonoBehaviour
         }
         else if (playerCount >= 4)
         {
-            gunsPlayers.Add(players.transform);
             newShootgunPlayers.Add(players.transform);
+            gunsPlayers.Add(players.transform);
         }
     }
     #endregion

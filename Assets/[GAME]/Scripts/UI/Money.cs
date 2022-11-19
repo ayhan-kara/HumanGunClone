@@ -21,7 +21,8 @@ public class Money : MonoBehaviour
             else
             {
                 Destroy(gameObject);
-                //add money
+                IncrementalManager.Instance.coin += IncrementalManager.Instance.income;
+                PlayerPrefs.SetInt("Coin", IncrementalManager.Instance.coin);
             }
         }
     }

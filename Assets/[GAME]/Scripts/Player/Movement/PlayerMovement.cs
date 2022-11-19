@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -15,6 +16,8 @@ public class PlayerMovement : MonoBehaviour
     public float sumValue;
     public float sensivity = 100f;
     public float X_clamp;
+
+    float timer = 0.0f;
     #endregion
 
 
@@ -26,16 +29,24 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
+        bool isPointerOverGameobject = IsPointerOverUIObject();
+        if (Input.GetMouseButtonDown(0) && !isPointerOverGameobject)
+        {
+            InputManager.Instance.StartGame();
+        }
         if (!InputManager.Instance.isStarted)
             return;
-        MovePlayer();
+        timer += Time.deltaTime;
+        if (timer >= .1f)
+        {
+            MovePlayer();
+        }
     }
     #endregion
 
     #region Movement
     void MovePlayer()
     {
-
         transform.position += Vector3.forward * Time.deltaTime * forwardSpeed;
 
         if (Input.GetMouseButton(0))
@@ -74,4 +85,18 @@ public class PlayerMovement : MonoBehaviour
         }
     }
     #endregion
+
+    public bool IsPointerOverUIObject()
+    {
+        PointerEventData eventDataCurrentPosition = new PointerEventData(EventSystem.current);
+        eventDataCurrentPosition.position = GetPointerPosition();
+        List<RaycastResult> results = new List<RaycastResult>();
+        EventSystem.current.RaycastAll(eventDataCurrentPosition, results);
+        return results.Count > 0;
+    }
+
+    private Vector2 GetPointerPosition()
+    {
+        return new Vector2(Input.mousePosition.x, Input.mousePosition.y);
+    }
 }

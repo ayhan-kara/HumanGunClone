@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class InputManager : MonoBehaviour
 {
@@ -19,21 +20,15 @@ public class InputManager : MonoBehaviour
 		Instance = this;
 	}
 
-	private void Update()
-	{
-		if (Input.GetMouseButtonDown(0))
-		{
-			StartGame();
-		}
-	}
-
 	#endregion
 
 	#region CheckStart
-	void StartGame()
+	public void StartGame()
 	{
+		UIManagement.instance.startPanel.SetActive(false);
+		UIManagement.instance.gameInPanel.SetActive(true);
         isStarted = true;
 		playerAnim.SetBool("IsRunning", true);
     }
-	#endregion
+    #endregion
 }

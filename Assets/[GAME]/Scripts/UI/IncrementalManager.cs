@@ -15,10 +15,10 @@ public class IncrementalManager : MonoBehaviour
     public int incomeLevel = 1;
     public int neededIncome;
     public int incomeLinear = 10;
-    public int fireRate;
-    public int fireRateLevel = 1;
-    public int neededFireRate;
-    public int fireRateLinear = 10;
+    public int stickman;
+    public int stickmanLevel = 1;
+    public int neededStickman;
+    public int stickmanLinear = 10;
     public int coin;
     public float fireTimer;
     #endregion
@@ -54,34 +54,32 @@ public class IncrementalManager : MonoBehaviour
     {
         Instance = this;
 
-        //fireTimer = ShootingManager.Instance.minTime;
-
         #region Skill Prefs
         incomeLevelTextUI.text = PlayerPrefs.GetInt("IncomeLevel").ToString();
         incomeLevel = PlayerPrefs.GetInt("IncomeLevel", 1);
-        incomeLinear = PlayerPrefs.GetInt("IncomeLinear", 100);
+        incomeLinear = PlayerPrefs.GetInt("IncomeLinear", 10);
 
         fireRateLevelTextUI.text = PlayerPrefs.GetInt("FireRateLevel").ToString();
-        fireRateLevel = PlayerPrefs.GetInt("FireRateLevel", 1);
-        fireRateLinear = PlayerPrefs.GetInt("FireRateLinear", 100);
+        stickmanLevel = PlayerPrefs.GetInt("FireRateLevel", 1);
+        stickmanLinear = PlayerPrefs.GetInt("FireRateLinear", 10);
 
         income = PlayerPrefs.GetInt("Income", 1);
 
         incomeText.text = PlayerPrefs.GetInt("Income").ToString();
-        neededIncome = PlayerPrefs.GetInt("NeededIncome", 100);
+        neededIncome = PlayerPrefs.GetInt("NeededIncome", 10);
 
-        fireRate = PlayerPrefs.GetInt("FireRate", 10);
+        stickman = PlayerPrefs.GetInt("FireRate", 10);
 
         fireRateText.text = PlayerPrefs.GetInt("FireRate").ToString();
-        neededFireRate = PlayerPrefs.GetInt("NeededFireRate", 100);
+        neededStickman = PlayerPrefs.GetInt("NeededFireRate", 10);
 
         incomeText.text = neededIncome.ToString();
-        fireRateText.text = neededFireRate.ToString();
+        fireRateText.text = neededStickman.ToString();
 
         incomeLevelTextUI.text = incomeLevel.ToString();
-        fireRateLevelTextUI.text = fireRateLevel.ToString();
+        fireRateLevelTextUI.text = stickmanLevel.ToString();
 
-        coin = PlayerPrefs.GetInt("Coin", 10);
+        coin = PlayerPrefs.GetInt("Coin", 1);
         coinText.text = coin.ToString();
 
         fireTimer = PlayerPrefs.GetFloat("FireTimer", .5f);
@@ -134,28 +132,28 @@ public class IncrementalManager : MonoBehaviour
 
     public void FireRateUpgrade()
     {
-        if (neededFireRate <= coin)
+        if (neededStickman <= coin)
         {
-            coin -= neededFireRate;
+            coin -= neededStickman;
             coinText.text = coin.ToString();
             PlayerPrefs.SetInt("Coin", coin);
 
-            fireRate += fireRateLinear / 5;
-            PlayerPrefs.SetInt("FireRate", fireRate);
+            stickman += stickmanLinear / 5;
+            PlayerPrefs.SetInt("FireRate", stickman);
 
             fireRateText.text = PlayerPrefs.GetInt("NeededFireRate").ToString();
-            neededFireRate += fireRateLinear;
+            neededStickman += stickmanLinear;
             //fireRateText.text = neededFireRate.ToString();
             FireRateThousandSystem();
-            PlayerPrefs.SetInt("NeededFireRate", neededFireRate);
+            PlayerPrefs.SetInt("NeededFireRate", neededStickman);
 
 
             fireRateLevelTextUI.text = PlayerPrefs.GetInt("FireRateLevel").ToString();
-            fireRateLevel++;
-            fireRateLevelTextUI.text = fireRateLevel.ToString();
-            fireRateLinear += 200;
-            PlayerPrefs.SetInt("FireRateLevel", fireRateLevel);
-            PlayerPrefs.SetInt("FireRateLinear", fireRateLinear);
+            stickmanLevel++;
+            fireRateLevelTextUI.text = stickmanLevel.ToString();
+            stickmanLinear += 200;
+            PlayerPrefs.SetInt("FireRateLevel", stickmanLevel);
+            PlayerPrefs.SetInt("FireRateLinear", stickmanLinear);
 
             if (fireTimer <= .1f)
                 return;
@@ -184,7 +182,7 @@ public class IncrementalManager : MonoBehaviour
 
     void FireRateButtonOnOff()
     {
-        if (neededFireRate <= coin)
+        if (neededStickman <= coin)
         {
             fireRateButton.SetActive(true);
             fireRatePassiveButton.SetActive(false);
@@ -225,14 +223,14 @@ public class IncrementalManager : MonoBehaviour
     }
     void FireRateThousandSystem()
     {
-        if (neededFireRate < 1000)
+        if (neededStickman < 1000)
         {
-            fireRateText.text = neededFireRate.ToString();
+            fireRateText.text = neededStickman.ToString();
         }
-        else if (neededFireRate >= 1000)
+        else if (neededStickman >= 1000)
         {
-            int k = neededFireRate / 1000;
-            float y = (neededFireRate - (k * 1000)) / 100;
+            int k = neededStickman / 1000;
+            float y = (neededStickman - (k * 1000)) / 100;
             fireRateText.text = k.ToString() + "." + y.ToString() + "K";
         }
     }

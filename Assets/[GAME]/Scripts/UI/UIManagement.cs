@@ -43,19 +43,6 @@ public class UIManagement : MonoBehaviour
         instance = this;
     }
 
-    private void Start()
-    {
-
-    }
-
-    public void StartGame()
-    {
-        //isStarted = true;
-        //PathFollower.Instance.speed = 20f;
-        //startPanel.SetActive(false);
-        //gameInPanel.SetActive(true);
-    }
-
     public void SettingsPanelOn()
     {
         if (!settingsPanel)
