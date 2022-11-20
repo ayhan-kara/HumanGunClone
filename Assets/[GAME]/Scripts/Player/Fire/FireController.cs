@@ -38,6 +38,8 @@ public class FireController : MonoBehaviour
     #region Shooting
     void Fire(float gunDelay)
     {
+        if (PlayerMovement.Instance.forwardSpeed == 0)
+            return;
         timer -= Time.deltaTime;
 
         if (timer <= 0)

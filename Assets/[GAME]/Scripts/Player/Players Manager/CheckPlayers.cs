@@ -13,6 +13,7 @@ public class CheckPlayers : MonoBehaviour
 
     public bool isPistol = false;
     public bool isShootgun = false;
+    bool isUpgrade = false;
     #endregion
 
     #region References
@@ -57,7 +58,7 @@ public class CheckPlayers : MonoBehaviour
 
     private void Update()
     {
-        if (isPistol || isShootgun)
+        if (isPistol || isShootgun || isUpgrade)
         {
             SetPositions();
             SetRotations();
@@ -76,15 +77,20 @@ public class CheckPlayers : MonoBehaviour
         }
         if (other.CompareTag("UpgradeDoor"))
         {
+            other.GetComponent<Collider>().enabled = false;
+            other.GetComponent<Renderer>().material.color = Color.gray;
             playerCount += other.GetComponent<UpgradeDoor>().doorCount;
             SetPool(other.transform);
         }
         if (other.CompareTag("DecreaseDoor"))
         {
+            other.GetComponent<Collider>().enabled = false;
+            other.GetComponent<Renderer>().material.color = Color.gray;
             CheckFail(other);
         }
         if (other.CompareTag("Barrel"))
         {
+            UIManagement.instance.Die();
             Debug.LogError("Fail");
             anim.Play("Fail");
             for (int i = 0; i < gunsPlayers.Count; i++)
@@ -92,6 +98,10 @@ public class CheckPlayers : MonoBehaviour
                 gunsPlayers[i].gameObject.SetActive(false);
 
             }
+        }
+        if (other.CompareTag("LevelEnd"))
+        {
+            UIManagement.instance.isFinished = true;
         }
     }
 
@@ -132,7 +142,7 @@ public class CheckPlayers : MonoBehaviour
     #region Players Adjustments
     void SetPositions()
     {
-        if (isPistol)
+        if (isPistol || isUpgrade)
         {
             switch (playerCount)
             {
@@ -167,7 +177,7 @@ public class CheckPlayers : MonoBehaviour
 
     void SetRotations()
     {
-        if (isPistol)
+        if (isPistol || isUpgrade)
         {
             switch (playerCount)
             {
@@ -201,7 +211,7 @@ public class CheckPlayers : MonoBehaviour
 
     void SetMaterial()
     {
-        if (isPistol)
+        if (isPistol || isUpgrade)
         {
             switch (playerCount)
             {
@@ -246,7 +256,7 @@ public class CheckPlayers : MonoBehaviour
 
     void SetAnimations()
     {
-        if (isPistol)
+        if (isPistol || isUpgrade)
         {
 
         }
@@ -285,6 +295,32 @@ public class CheckPlayers : MonoBehaviour
             gunsPlayers.Add(players.transform);
         }
     }
+
+    public void SetUpgradeStickman()
+    {
+        playerCount++;
+        isUpgrade = true;
+        Players players = Players();
+        players.gameObject.SetActive(true);
+
+        players.transform.position = transform.position;
+        players.transform.rotation = Quaternion.identity;
+        players.transform.parent = transform;
+
+        players.GetComponent<Animator>().SetBool("Pos1", true);
+        anim.SetBool("IsRunning", true);
+        anim.SetBool("GunPos", true);
+
+        if (playerCount <= 3)
+        {
+            gunsPlayers.Add(players.transform);
+        }
+        else if (playerCount >= 4)
+        {
+            newShootgunPlayers.Add(players.transform);
+            gunsPlayers.Add(players.transform);
+        }
+    }
     #endregion
 
     #region Fail
@@ -304,7 +340,8 @@ public class CheckPlayers : MonoBehaviour
             Debug.Break();
             Debug.LogError("Fail");
             anim.Play("Fail");
-            //fail bool eklenecek
+            UIManagement.instance.isStarted = false;
+            UIManagement.instance.Die();
         }
     }
     #endregion

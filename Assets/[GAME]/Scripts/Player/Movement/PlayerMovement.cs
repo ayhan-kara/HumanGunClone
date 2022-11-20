@@ -5,7 +5,11 @@ using UnityEngine.EventSystems;
 
 public class PlayerMovement : MonoBehaviour
 {
-	#region Public-Private Variables
+    #region Singleton
+    public static PlayerMovement Instance;
+    #endregion
+
+    #region Public-Private Variables
     private float firstValue;
     private float currentValue;
     private float screenWidth;
@@ -22,6 +26,12 @@ public class PlayerMovement : MonoBehaviour
 
 
     #region Monobehaviour
+
+    private void Awake()
+    {
+        Instance = this;
+    }
+
     private void Start()
     {
         screenWidth = Screen.width;
@@ -47,6 +57,9 @@ public class PlayerMovement : MonoBehaviour
     #region Movement
     void MovePlayer()
     {
+        if (UIManagement.instance.isFinished)
+            if (UIManagement.instance.isFail)
+                return;
         transform.position += Vector3.forward * Time.deltaTime * forwardSpeed;
 
         if (Input.GetMouseButton(0))

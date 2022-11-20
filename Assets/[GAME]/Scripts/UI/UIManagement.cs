@@ -31,6 +31,8 @@ public class UIManagement : MonoBehaviour
     [Header("Variables")]
     public bool isVibrateActive = true;
     public bool isStarted = false;
+    public bool isFinished = false;
+    public bool isFail;
 
     public int currentLevel;
     public int nextLevel;
@@ -148,5 +150,20 @@ public class UIManagement : MonoBehaviour
         nextLevel++;
         PlayerPrefs.SetInt("CurrentLevel", currentLevel);
         PlayerPrefs.SetInt("NextLevel", nextLevel);
+    }
+
+    public void Die()
+    {
+        PlayerMovement.Instance.forwardSpeed = 0f;
+        if (isFinished)
+        {
+            gameInPanel.SetActive(false);
+            winPanel.SetActive(true);
+        }
+        else
+        {
+            gameInPanel.SetActive(false);
+            failPanel.SetActive(true);
+        }
     }
 }

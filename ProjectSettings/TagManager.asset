@@ -12,6 +12,7 @@ TagManager:
   - UpgradeDoor
   - DecreaseDoor
   - BombBarrel
+  - LevelEnd
   layers:
   - Default
   - TransparentFX

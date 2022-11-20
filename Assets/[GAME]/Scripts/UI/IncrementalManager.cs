@@ -38,16 +38,6 @@ public class IncrementalManager : MonoBehaviour
 
     [SerializeField] GameObject incomePassiveButton;
     [SerializeField] GameObject fireRatePassiveButton;
-
-    [SerializeField] GameObject incomeLevelText;
-    [SerializeField] GameObject fireRateLevelText;
-
-    [SerializeField] GameObject incomeLevelNumber;
-    [SerializeField] GameObject fireRateLevelNumber;
-
-    [SerializeField] GameObject incomeUIText;
-    [SerializeField] GameObject fireRateUIText;
-
     #endregion
 
     private void Awake()
@@ -130,10 +120,12 @@ public class IncrementalManager : MonoBehaviour
         }
     }
 
-    public void FireRateUpgrade()
+    public void StickmanUpgrade()
     {
         if (neededStickman <= coin)
         {
+            CheckPlayers.Instance.SetUpgradeStickman();
+
             coin -= neededStickman;
             coinText.text = coin.ToString();
             PlayerPrefs.SetInt("Coin", coin);
@@ -154,11 +146,6 @@ public class IncrementalManager : MonoBehaviour
             stickmanLinear += 200;
             PlayerPrefs.SetInt("FireRateLevel", stickmanLevel);
             PlayerPrefs.SetInt("FireRateLinear", stickmanLinear);
-
-            if (fireTimer <= .1f)
-                return;
-            fireTimer -= .01f;
-            PlayerPrefs.SetFloat("FireTimer", fireTimer);
         }
         else
         {
