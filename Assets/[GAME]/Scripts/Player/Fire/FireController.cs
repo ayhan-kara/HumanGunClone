@@ -24,8 +24,11 @@ public class FireController : MonoBehaviour
     #region Trigger
     private void OnTriggerStay(Collider other)
     {
-
         if (other.CompareTag("Barrel"))
+        {
+            Fire(gunDelay);
+        }
+        if (other.CompareTag("BombBarrel"))
         {
             Fire(gunDelay);
         }

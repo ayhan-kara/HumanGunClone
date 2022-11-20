@@ -45,6 +45,21 @@ public class Bullet : MonoBehaviour
         {
             gameObject.SetActive(false);
         }
+        if (other.CompareTag("BombBarrel"))
+        {
+            BoomBarrel bombBarrel = other.GetComponent<BoomBarrel>();
+
+            bombBarrel.barrelCount--;
+            bombBarrel.barrelCountText.text = bombBarrel.barrelCount.ToString();
+
+            if (bombBarrel.barrelCount <= 0)
+            {
+                bombBarrel.explosionVFX.Play();
+                bombBarrel.isExplosion = true;
+                Destroy(other.gameObject, .3f);
+            }
+            gameObject.SetActive(false);
+        }
     }
     #endregion
 
